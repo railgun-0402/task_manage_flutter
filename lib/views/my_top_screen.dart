@@ -16,8 +16,16 @@ class MyTopScreen extends StatelessWidget {
   }
 }
 
-class TodoListPage extends StatelessWidget {
+class TodoListPage extends StatefulWidget {
   const TodoListPage({Key? key}) : super(key: key);
+
+  @override
+  State<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  // Todoリストのデータ
+  List<String> todoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +33,31 @@ class TodoListPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('リスト一覧画面'),
       ),
-      body: ListView(
-        children: const <Widget> [
-          Card(child: ListTile(title: Text('Task1'))),
-          Card(child: ListTile(title: Text('Task2'))),
-          Card(child: ListTile(title: Text('Task3'))),
-        ],
+      body: ListView.builder(
+        itemCount: todoList.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              title: Text(todoList[index]),
+            ),
+          );
+        },
 
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // pushで画面遷移
-            Navigator.of(context).push(
+          onPressed: () async {
+            // リスト追加画面から渡される値を受け取る
+            final newListText = await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {
                 return const TodoAddScreen();
               })
             );
+            if (newListText != null) {
+              // キャンセルした場合はnullが返ってくる
+              setState(() {
+                todoList.add(newListText);
+              });
+            }
           },
           child: const Icon(Icons.add),
       ),
