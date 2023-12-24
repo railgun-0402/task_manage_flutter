@@ -1,16 +1,34 @@
 # task_manage
 
-A new Flutter project.
+FlutterでTodoアプリを作成。
 
-## Getting Started
+シンプルなアプリだが、最近Web寄りのタスクが多くモバイルから離れてるので
 
-This project is a starting point for a Flutter application.
+リハビリ程度になれば程度の温度感
 
-A few resources to get you started if this is your first Flutter project:
+## function
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- ➕を押下すると新規でタスクを追加できる
+- タスクを押下すると、詳細画面に遷移する
+- 詳細画面でタスクを更新できる
+- 新規でタスク登録できる
+- アプリを起動すると、スプラッシュ画面が出る
+- スプラッシュ画面の後はTop画面に遷移する
+- 詳細を更新すると、更新日がその時間に更新される
+- 期日を設定できる
+- 過ぎたらPushできる
+- UT(画面ごとにテストコード実装)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## views
+- Top画面(タスク一覧を表示する)
+- タスク詳細画面(件名・進捗・引っ張ると調整できるやつ・更新日・作成日)
+- 登録画面(件名を入力・登録ボタン)
+- 追加時確認ダイアログ
+- スプラッシュ画面
+
+## reference
+flutter-study.devさん 4章
+
+※大元はこれの通りに作成し、機能を追加する
+
+https://www.flutter-study.dev/todo-app/add-page
