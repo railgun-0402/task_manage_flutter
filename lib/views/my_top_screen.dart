@@ -56,12 +56,21 @@ class _TodoListPageState extends State<TodoListPage> {
               children: [
                 SlidableAction(
                     onPressed: (_) async {
-                      // 編集画面へ遷移
+                      // 編集画面へ遷移(todoを渡す)
+                      final editText =
                       await Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return const ListEdit();
+                            return ListEdit(todoContent: todoList[index]);
                           })
                       );
+                      print('editText:::');
+                      print(editText);
+                      if (editText != null) {
+                        // キャンセルした場合はnullが返ってくる
+                        setState(() {
+                          todoList[index] = editText;
+                        });
+                      }
                     },
                   backgroundColor: Colors.yellow.shade700,
                   foregroundColor: Colors.white,
