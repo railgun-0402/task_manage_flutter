@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:task_manage/views/list_edit/list_edit.dart';
 import 'package:task_manage/views/todo_add_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyTopScreen extends StatelessWidget {
   const MyTopScreen({Key? key}) : super(key: key);
@@ -26,6 +27,26 @@ class TodoListPage extends StatefulWidget {
 }
 
 class _TodoListPageState extends State<TodoListPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    // 初期化時にShared Preferencesに保存している値を読み込む
+    _getPrefItems();
+  }
+
+  // Shared PreferencesにtodoListを保存
+  _setPrefItems() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setStringList('todoList', todoList);
+  }
+
+  // Shared Preferencesに保存したtodoListを読み込む
+  _getPrefItems() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    todoList = sharedPreferences.getStringList('todoList') ?? [];
+  }
+
   // Todoリストのデータ
   List<String> todoList = [];
 
@@ -48,6 +69,7 @@ class _TodoListPageState extends State<TodoListPage> {
                   setState(() {
                     todoList.removeAt(index);
                   });
+                  _setPrefItems();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('タスクを削除しました!'))
                   );
@@ -63,13 +85,13 @@ class _TodoListPageState extends State<TodoListPage> {
                             return ListEdit(todoContent: todoList[index]);
                           })
                       );
-                      print('editText:::');
-                      print(editText);
                       if (editText != null) {
                         // キャンセルした場合はnullが返ってくる
                         setState(() {
                           todoList[index] = editText;
                         });
+                        // データ保存
+                        _setPrefItems();
                       }
                     },
                   backgroundColor: Colors.yellow.shade700,
@@ -83,6 +105,7 @@ class _TodoListPageState extends State<TodoListPage> {
                     setState(() {
                       todoList.removeAt(index);
                     });
+                    _setPrefItems();
                   },
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -123,6 +146,7 @@ class _TodoListPageState extends State<TodoListPage> {
               setState(() {
                 todoList.add(newListText);
               });
+              _setPrefItems();
             }
           },
           child: const Icon(Icons.add),
